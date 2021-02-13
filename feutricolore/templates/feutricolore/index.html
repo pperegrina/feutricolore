@@ -1,0 +1,40 @@
+<html>
+<head>
+<title>Trafic light</title>
+<link rel="stylesheet" href=
+"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity=
+"sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+        crossorigin="anonymous">
+<style type="text/css" media="screen">
+a:link { color:white; text-decoration: none; }
+a:visited { color:white; text-decoration: none; }
+a:hover { color:white; text-decoration: underline; }
+a:active { color:white; text-decoration: none; }
+</style>
+</head>
+<body style="font-family=Arial; background-color: black; color: white;">	
+<h1>Trafic light</h1>
+{%if selected_mode %}
+<h2>Selected mode: {{selected_mode}}</h2>
+{% endif %}
+{% for mode in modes %}
+{{ mode.id }} - <a id="link_{{mode.id}}" onclick="document.getElementById('spinner_{{mode.id}}').style.display='';return true"  href="/{{mode.id}}">{{ mode.description }}</a>
+<div class="spinner-border text-primary"
+     id="spinner_{{mode.id}}" role="status" style="display:none;">
+  <span class="sr-only">Loading...</span>
+</div>
+<br/>
+<table>
+{% for G,Y,R in mode.sequence %}
+<td style="border: 1px solid #ddd; padding-bottom: 3px; padding-left: 6px; padding-right: 6px;">
+<img src="/static/img/green_{% if G %}on{% else%}off{% endif %}.png" height="16" width="16" />
+<img src="/static/img/yellow_{% if Y %}on{% else%}off{% endif %}.png" height="16" width="16" />
+<img src="/static/img/red_{% if R %}on{% else%}off{% endif %}.png" height="16" width="16" />
+</td>
+{% endfor %}
+</table>
+<br/>
+{% endfor %}
+</body>
+</html>
