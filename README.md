@@ -9,6 +9,7 @@ See:
 - https://www.deco-americaine.com/produit/sequenceur-dalternance-des-feux-tricolores-220v/
 
 Be careful with GPIO pin numnbers, python wiringpi pin numbers are the real ones that can be found here: https://fr.pinout.xyz/pinout/wiringpi
+
 Example: for wiringpi 3 used in KS0212 sample C code, we need to use 15 in python code.
 
 ## Installation
