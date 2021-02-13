@@ -49,3 +49,9 @@ python3 -m venv djenv
 source djenv/bin/activate
 pip install -r requirements.txt
 ```
+
+## Screeshot
+
+This is how it looks, clicking on a sequence will send the right buttons sequence on traffic light controller to set it
+
+![alt text](https://github.com/pperegrina/feutricolore/raw/main/doc/Screenshot.png "Single page app")
