@@ -54,4 +54,4 @@ pip install -r requirements.txt
 
 This is how it looks, clicking on a sequence will send the right buttons sequence on traffic light controller to set it
 
-![alt text](https://github.com/pperegrina/feutricolore/raw/main/doc/Screenshot.png "Single page app")
+![alt text](https://github.com/pperegrina/feutricolore/raw/main/docs/Screenshot.png "Single page app")
