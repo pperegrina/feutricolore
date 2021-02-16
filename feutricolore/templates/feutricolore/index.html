@@ -18,23 +18,26 @@ a:active { color:white; text-decoration: none; }
 {%if selected_mode %}
 <h2>Selected mode: {{selected_mode}}</h2>
 {% endif %}
-{% for mode in modes %}
-{{ mode.id }} - <a id="link_{{mode.id}}" onclick="document.getElementById('spinner_{{mode.id}}').style.display='';return true"  href="/{{mode.id}}">{{ mode.description }}</a>
+{% for sequence_id, sequence in sequences.items %}
+{{ sequence_id }} - <a id="link_{{ sequence_id }}" onclick="document.getElementById('spinner_{{ sequence_id }}').style.display='';return true"  href="/{{ sequence_id }}">{{ sequence.name }}</a>
 <div class="spinner-border text-primary"
-     id="spinner_{{mode.id}}" role="status" style="display:none;">
+     id="spinner_{{ sequence_id }}" role="status" style="display:none;">
   <span class="sr-only">Loading...</span>
 </div>
 <br/>
 <table>
-{% for G,Y,R in mode.sequence %}
+{% for info in sequence.info %}
 <td style="border: 1px solid #ddd; padding-bottom: 3px; padding-left: 6px; padding-right: 6px;">
-<img src="/static/img/green_{% if G %}on{% else%}off{% endif %}.png" height="16" width="16" />
-<img src="/static/img/yellow_{% if Y %}on{% else%}off{% endif %}.png" height="16" width="16" />
-<img src="/static/img/red_{% if R %}on{% else%}off{% endif %}.png" height="16" width="16" />
+	<img src="/static/img/green_{% if info.green %}on{% else %}off{% endif %}.png" height="16" width="16" />{% if info.green_blink %}*{% endif %}
+<img src="/static/img/yellow_{% if info.yellow %}on{% else %}off{% endif %}.png" height="16" width="16" />{% if info.yellow_blink %}*{% endif %}
+<img src="/static/img/red_{% if info.red %}on{% else %}off{% endif %}.png" height="16" width="16" />{% if info.red_blink %}*{% endif %}  - {{info.t}}
 </td>
 {% endfor %}
 </table>
 <br/>
 {% endfor %}
+<br/>
+<br/>
+* = blink
 </body>
 </html>

@@ -20,6 +20,6 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path('<int:mode_id>/', views.set_mode, name='set_mode'),    
+    path('<int:sequence_id>/', views.set_sequence, name='set_sequence'),   
 ]
 

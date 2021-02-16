@@ -1,56 +1,69 @@
 from django.http import HttpResponse
 from django.template import loader
-import wiringpi
-import time
-from . import modes
-
-RELAY_J5 = 37
-RELAY_J4 = 31
-RELAY_J3 = 15
-RELAY_J2 = 7
-
-wiringpi.wiringPiSetupPhys()
-wiringpi.pinMode(RELAY_J5,1)
-wiringpi.pinMode(RELAY_J4,1)
-wiringpi.pinMode(RELAY_J3,1)
-wiringpi.pinMode(RELAY_J2,1)
-
-def J2():
-    wiringpi.digitalWrite(RELAY_J2,1)
-    time.sleep(0.25)
-    wiringpi.digitalWrite(RELAY_J2,0)
-    time.sleep(0.25)    
-
-def J3():
-    wiringpi.digitalWrite(RELAY_J3,1)
-    time.sleep(0.25)
-    wiringpi.digitalWrite(RELAY_J3,0)
-    time.sleep(0.25)
+from . import sequences
 
 def render(context, request):
+    seq = dict(sequences.SEQUENCES) 
+    for k in seq:
+        seq[k]['info'] = []
+        for data in seq[k]['data']:
+            info = {
+                't': 'forever',
+                'green' : False,
+                'green_blink': False,
+                'yellow': False,
+                'yellow_blink': False,
+                'red': False,
+                'red_blink': False,
+            }
+            values = data[0]
+            t = data[1]
+            if t != -1:
+                info['t'] = '%s s'%t
+            if 'g' in values:
+                info['green'] = True
+            elif 'G' in values:
+                 info['green'] = True
+                 info['green_blink'] = True
+            if 'y' in values:
+                info['yellow'] = True
+            elif 'Y' in values:
+                 info['yellow'] = True
+                 info['yellow_blink'] = True
+            if 'r' in values:
+                info['red'] = True
+            elif 'R' in values:
+                 info['red'] = True
+                 info['red_blink'] = True                 
+            seq[k]['info'].append(info)
     template = loader.get_template('feutricolore/index.html')
-    context['modes'] = modes.MODES
+    context['sequences'] = seq
     return HttpResponse(template.render(context, request))
 
 def index(request):
     context = { 
         'selected_mode': 'unknown',
     }
+    try:
+        f = open('/data/sequence_id.txt','r')
+        sequence_id = int(f.read())
+        f.close()
+        if sequence_id in sequences.SEQUENCES:
+            context['selected_mode'] = '%d - %s' % (sequence_id, sequences.SEQUENCES[sequence_id]['name'])
+    except:
+        pass    
     return render(context, request)
 
-def set_mode(request, mode_id):
+def set_sequence(request, sequence_id):
     context = {
         'selected_mode': 'unknown',
     }    
-    for mode in modes.MODES:
-        if mode_id == mode['id']:
-            context['selected_mode'] = '%d - %s' % (mode['id'], mode['description'])
-            J2()
-            time.sleep(0.75)
-            cpt=1
-            while cpt<mode_id:
-                J3()
-                cpt+=1
-            break
+    if sequence_id in sequences.SEQUENCES:
+        context['selected_mode'] = '%d - %s' % (sequence_id, sequences.SEQUENCES[sequence_id]['name'])
+        f = open('/data/sequence_id.txt','w')
+        f.write(str(sequence_id))
+        f.flush()
+        f.close()
     return render(context, request)
+
 
