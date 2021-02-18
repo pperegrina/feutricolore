@@ -1,6 +1,7 @@
 import wiringpi
 import time
 import pathlib
+import syslog
 import sequences
 
 RELAY_J5 = 37
@@ -18,6 +19,9 @@ wiringpi.digitalWrite(RELAY_J5,0)
 wiringpi.digitalWrite(RELAY_J4,0)
 wiringpi.digitalWrite(RELAY_J3,0)
 wiringpi.digitalWrite(RELAY_J2,0)
+
+syslog.openlog(logoption=syslog.LOG_PID, facility=syslog.LOG_DAEMON)
+syslog.syslog(syslog.LOG_INFO, 'Feutricolore server started')
 
 current_sequence = 1
 file_t = 0
@@ -56,7 +60,9 @@ while True:
     state_change = False
     
     if reset:
-        print(seq['name'])
+        msg = 'switching to %s sequence' % seq['name']
+        syslog.syslog(syslog.LOG_INFO, 'Feutricolore %s' % msg)
+        print(msg)
         seq_index = 0
         if seq['data'][seq_index][1] != -1:
             next_t = now + seq['data'][seq_index][1]
