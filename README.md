@@ -2,11 +2,9 @@
 
 ## Intro
 
-Project to control a traffic lights controller card with 2 buttons from a Raspberry Pi with KS0212 keyestudio RPI 4-channel Relay Shield
+Project to control traffic lights from a Raspberry Pi with KS0212 keyestudio RPI 4-channel Relay Shield
 
-See:
-- https://wiki.keyestudio.com/index.php/KS0212_keyestudio_RPI_4-channel_Relay_Shield
-- https://www.deco-americaine.com/produit/sequenceur-dalternance-des-feux-tricolores-220v/
+See: https://wiki.keyestudio.com/index.php/KS0212_keyestudio_RPI_4-channel_Relay_Shield 
 
 Be careful with GPIO pin numnbers, python wiringpi pin numbers are the real ones that can be found here: https://fr.pinout.xyz/pinout/wiringpi
 
@@ -14,7 +12,9 @@ Example: for wiringpi 3 used in KS0212 sample C code, we need to use 15 in pytho
 
 ## Installation
 
-On Raspberry Pi (assuming installation for pi user, thanks to this doc : https://pimylifeup.com/raspberry-pi-django/)
+See: https://pimylifeup.com/raspberry-pi-django/
+
+On Raspberry Pi, pi user:
 
 ```
 sudo apt install apache2 -y
@@ -48,10 +48,37 @@ cd feutricolore
 python3 -m venv djenv
 source djenv/bin/activate
 pip install -r requirements.txt
+mkdir /data
+chmod 777 /data
+sudo vi /etc/rc.local
+
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
+fi
+/home/pi/feutricolore/feutricolore/start_server.sh
+exit 0
 ```
+
+Add rc.local service using this doc : https://www.troublenow.org/752/debian-10-add-rc-local/
 
 ## Screeshot
 
-This is how it looks, clicking on a sequence will send the right buttons sequence on traffic light controller to set it
-
+At boot, a server python script is started to control lights in the background.
+A web page allows to change the sequence (using a file to send the info to the server script).
+This is how it looks like
 ![alt text](https://github.com/pperegrina/feutricolore/raw/main/docs/Screenshot.png "Single page app")
