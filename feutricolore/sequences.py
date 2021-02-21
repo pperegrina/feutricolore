@@ -30,5 +30,13 @@ SEQUENCES = {
     7: {
         'name': 'red/yellow/green chaser',
         'data': [('r',3), ('y',3), ('g',3)]
+    },
+    8: {
+        'name': 'fast green/yellow/red/yellow/green chaser',
+        'data': [('g',0.5), ('y',0.5), ('r',0.5), ('y',0.5)]
+    },
+    9: {
+        'name': 'all blink',
+        'data': [('GYR',-1),]
     },    
 }
