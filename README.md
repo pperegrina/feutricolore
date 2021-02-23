@@ -43,7 +43,7 @@ sudo vim /etc/apache2/sites-enabled/000-default.conf
 sudo systemctl restart apache2
 sudo usermod -a -G gpio www-data
 
-sudo apt-get install git
+sudo apt-get install git python3-venv
 cd /home/pi/
 git clone https://github.com/pperegrina/feutricolore.git
 cd feutricolore
