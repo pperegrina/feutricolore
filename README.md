@@ -43,7 +43,7 @@ sudo vim /etc/apache2/sites-enabled/000-default.conf
 sudo systemctl restart apache2
 sudo usermod -a -G gpio www-data
 cd /home/pi/
-git clone git@github.com:/pperegrina/feutricolore
+git clone https://github.com/pperegrina/feutricolore.git
 cd feutricolore
 python3 -m venv djenv
 source djenv/bin/activate
