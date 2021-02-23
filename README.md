@@ -42,12 +42,15 @@ sudo vim /etc/apache2/sites-enabled/000-default.conf
 
 sudo systemctl restart apache2
 sudo usermod -a -G gpio www-data
+
+sudo apt-get install git
 cd /home/pi/
 git clone https://github.com/pperegrina/feutricolore.git
 cd feutricolore
 python3 -m venv djenv
 source djenv/bin/activate
 pip install -r requirements.txt
+
 mkdir /data
 chmod 777 /data
 sudo vi /etc/rc.local
