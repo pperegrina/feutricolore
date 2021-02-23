@@ -51,8 +51,8 @@ python3 -m venv djenv
 source djenv/bin/activate
 pip install -r requirements.txt
 
-mkdir /data
-chmod 777 /data
+sudo mkdir /data
+sudo chmod 777 /data
 sudo vi /etc/rc.local
 
 #!/bin/sh -e
